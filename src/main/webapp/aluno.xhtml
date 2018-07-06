@@ -9,58 +9,68 @@
 </h:head>
 
 <h:body>
-	<h:form>
-		<div class="ui-fluid">
-			<p:messages id="growl" closable="true" />
-			
-			<p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
-			
-				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome" value="#{alunoBean.aluno.nome}" required="true" 
-					requiredMessage="O campo Nome deve ser preenchido!" />
-					
-				<p:outputLabel value="E-mail" for="email" />
-				<p:inputText id="email" value="#{alunoBean.aluno.email}" required="true" 
-					requiredMessage="O campo E-mail deve ser preenchido!" />
+	<h:form id="frmCadastro">
+	
+		<p:messages id="growl" closable="true" />
+		
+		<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4" 
+			layout="grid" styleClass="ui-panelgrid-blank">
+		
+			<p:outputLabel value="Nome" for="nome" />
+			<p:inputText id="nome" value="#{alunoBean.aluno.nome}" required="true" 
+				requiredMessage="O campo Nome deve ser preenchido!" />
 				
-				<p:outputLabel value="Sexo" for="sexo" />
-				<p:selectOneMenu id="sexo" value="#{alunoBean.aluno.sexo}" required="true" 
-					requiredMessage="O campo Sexo deve ser preenchido!">
-					<f:selectItems value="#{alunoBean.sexos}" />
-				</p:selectOneMenu>
-				
-				<p:outputLabel for="nascimento" value="Nascimento" />
-        		<p:calendar id="nascimento" value="#{alunoBean.aluno.dataNascimento}" pattern="dd/MM/yyyy" 
-        			required="true" requiredMessage="O campo Nascimento deve ser preenchido!" effect="fold" />
-				
-			</p:panelGrid>
+			<p:outputLabel value="E-mail" for="email" />
+			<p:inputText id="email" value="#{alunoBean.aluno.email}" required="true" 
+				requiredMessage="O campo E-mail deve ser preenchido!" />
 			
-		</div>
+			<p:outputLabel value="Sexo" for="sexo" />
+			<p:selectOneMenu id="sexo" value="#{alunoBean.aluno.sexo}" required="true" 
+				requiredMessage="O campo Sexo deve ser preenchido!">
+				<f:selectItems value="#{alunoBean.sexos}" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="nascimento" value="Nascimento" />
+       		<p:calendar id="nascimento" value="#{alunoBean.aluno.dataNascimento}" pattern="dd/MM/yyyy" 
+       			required="true" requiredMessage="O campo Nascimento deve ser preenchido!" effect="fold" />
+			
+		</p:panelGrid>
 		
 		<p:commandButton value="Salvar" id="save" actionListener="#{alunoBean.salvar}"
-			update="growl tabela @form" style="margin-top:20px" />
-			
+			update="growl frmCadastro :frmTabela" style="margin-top:20px" />
+	
 	</h:form>
-
-	<p:dataTable id="tabela" var="aluno" value="#{alunoBean.alunosCadastrados}" reflow="true" style="margin-top:20px">
-		<p:column headerText="Nome">
-			<h:outputText value="#{aluno.nome}" />
-		</p:column>
-
-		<p:column headerText="E-mail">
-			<h:outputText value="#{aluno.email}" />
-		</p:column>
-
-		<p:column headerText="Sexo">
-			<h:outputText value="#{aluno.sexo}" />
-		</p:column>
-
-		<p:column headerText="Nascimento">
-			<h:outputText value="#{aluno.dataNascimento}">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
-			</h:outputText>
-		</p:column>
-	</p:dataTable>
+		
+	<h:form id="frmTabela">
+			
+		<p:dataTable id="tabela" var="aluno" selection="#{alunoBean.aluno}" selectionMode="single" rowKey="#{aluno.id}"
+			value="#{alunoBean.alunosCadastrados}" reflow="true" style="margin-top:20px">
+			
+			<p:column headerText="Nome">
+				<h:outputText value="#{aluno.nome}" />
+			</p:column>
+	
+			<p:column headerText="E-mail">
+				<h:outputText value="#{aluno.email}" />
+			</p:column>
+	
+			<p:column headerText="Sexo">
+				<h:outputText value="#{aluno.sexo}" />
+			</p:column>
+	
+			<p:column headerText="Nascimento">
+				<h:outputText value="#{aluno.dataNascimento}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<f:facet name="footer">
+	            <p:commandButton process="tabela" update=":frmCadastro" value="Editar" />
+	            <p:commandButton process="tabela" actionListener="#{alunoBean.excluir}" 
+	            	update="@form :frmCadastro:growl" value="Excluir" />
+	        </f:facet>
+		</p:dataTable>
+	
+	</h:form>
 
 </h:body>
 

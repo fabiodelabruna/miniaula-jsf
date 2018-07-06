@@ -22,6 +22,29 @@ public class AlunoDao {
 		manager.close();
 	}
 	
+	public void alterar(Aluno aluno) {
+		EntityManager manager = JpaUtil.getEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		
+		aluno = manager.merge(aluno);
+		
+		transaction.commit();
+		manager.close();
+	}
+	
+	public void excluir(Aluno aluno) {
+		EntityManager manager = JpaUtil.getEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		
+		aluno = manager.find(Aluno.class, aluno.getId());
+		manager.remove(aluno);
+		
+		transaction.commit();
+		manager.close();
+	}
+	
 	public List<Aluno> buscarTodos() {
 		EntityManager manager = JpaUtil.getEntityManager();
 		
